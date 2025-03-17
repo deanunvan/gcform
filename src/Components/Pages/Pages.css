@@ -125,6 +125,7 @@
     font-size: 0.9rem;
     background-color: #000000;
     color: #fff;
+    margin-bottom: 0;
   }
   
   /* MEDIA QUERY FOR RESPONSIVENESS */
@@ -184,7 +185,7 @@
 }
 
 .logo2 {
-  margin: 25px 25px;
+  margin: 0 10px;
   
 }
 
@@ -278,6 +279,10 @@
     border-radius: 8px;
 }
 
+#country-code{
+  width: 200px;
+}
+
 .country-select {
     padding: 8px 4px 8px 8px;
     border: none;
@@ -348,8 +353,8 @@
     }
 
     .helmet-img {
-      width: 320px;
-      height: 200px;
+      width: 260px;
+      height: 150px;
   }
 
   .left-section{
@@ -361,6 +366,10 @@
     br{
       display: block;
     }
+  }
+
+  #country-code{
+    width: 30px;
   }
 }
 

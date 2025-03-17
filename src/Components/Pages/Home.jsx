@@ -1,27 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import ScrollReveal from 'scrollreveal';
 import mainLogo from '../Images/main logo.png';
 import heroImage from '../Images/one.png';
 import './Pages.css';
 
 export const Home = () => {
-  useEffect(() => {
-    // Initialize ScrollReveal
-    const sr = ScrollReveal({
-      origin: 'bottom',
-      distance: '50px',
-      duration: 1000,
-      delay: 200,
-      reset: true
-    });
-
-    sr.reveal('.hero-text', {});
-    sr.reveal('.orange-line', {});
-
-    return () => sr.destroy();
-  }, []);
-
   return (
     <div className="home-container">
       {/* Header / Logo */}
@@ -69,4 +52,3 @@ export const Home = () => {
     </div>
   );
 };
-

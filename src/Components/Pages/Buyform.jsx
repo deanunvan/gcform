@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ScrollReveal from 'scrollreveal';
 import 'remixicon/fonts/remixicon.css';
 import { useBuyerContext } from '../../context/BuyerContext';
-import Logo2 from '../Images/logo2.png';
+import mainLogo from '../Images/main logo.png';
 import helmet from '../Images/two.png';
 import './Pages.css';
 
@@ -105,7 +104,7 @@ const countries = [
   { value: "+371", country: "LV", display: "🇱🇻 Latvia +371" },
   { value: "+961", country: "LB", display: "🇱🇧 Lebanon +961" },
   { value: "+266", country: "LS", display: "🇱🇸 Lesotho +266" },
-  { value: "+231", country: "LR", display: "��🇷 Liberia +231" },
+  { value: "+231", country: "LR", display: "🇱🇷 Liberia +231" },
   { value: "+218", country: "LY", display: "🇱🇾 Libya +218" },
   { value: "+423", country: "LI", display: "🇱🇮 Liechtenstein +423" },
   { value: "+370", country: "LT", display: "🇱🇹 Lithuania +370" },
@@ -220,52 +219,6 @@ export const Buyform = () => {
     countryCode: buyerData.personalInfo.countryCode
   });
 
-  useEffect(() => {
-    // Initialize ScrollReveal
-    const sr = ScrollReveal({
-      origin: 'top',
-      distance: '60px',
-      duration: 1000,
-      delay: 200
-    });
-
-    // Left Section Animations
-    sr.reveal('.left-section h1', { delay: 300 });
-    sr.reveal('.helmet-img', { 
-      delay: 400,
-      origin: 'left'
-    });
-    sr.reveal('.back-btn', { 
-      delay: 500,
-      origin: 'bottom'
-    });
-
-    // Right Section Animations
-    sr.reveal('.right-section', { 
-      delay: 300,
-      origin: 'right'
-    });
-    
-    // Form Elements Animations
-    sr.reveal('#buyerForm .input-group', { 
-      delay: 400,
-      interval: 100,
-      origin: 'right'
-    });
-    
-    sr.reveal('.question-text', { 
-      delay: 600,
-      origin: 'left'
-    });
-    
-    sr.reveal('.submit-btn', { 
-      delay: 700,
-      origin: 'bottom'
-    });
-
-    return () => sr.destroy();
-  }, []);
-
   const validateForm = () => {
     const errors = {};
     if (!formData.name.trim()) {
@@ -319,7 +272,7 @@ export const Buyform = () => {
 
   return (
     <div className='buyform'>
-      <img className="logo2" src={Logo2} alt="Groundcentered Logo" />
+      <img className="logo2" src={mainLogo} alt="Groundcentered Logo" />
       <div className="container">
         <div className="left-section">
           <h1>Hi, Welcome Buyer!</h1>
@@ -409,4 +362,3 @@ export const Buyform = () => {
     </div>
   );
 };
-

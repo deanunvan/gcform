@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
 import { useBuyerContext } from '../../context/BuyerContext';
 import qn1 from '../Images/q5.png';
-import Logo2 from '../Images/logo2.png';
+import mainLogo from '../Images/main logo.png';
 import "./Pages.css";
 
 export const Buyqn5 = () => {
@@ -73,7 +73,7 @@ export const Buyqn5 = () => {
 
   return (
     <div>
-      <img className="logo2" src={Logo2} alt="Groundcentered Logo" />
+      <img className="logo2" src={mainLogo} alt="Groundcentered Logo" />
       <div className="supqn1-container">
         <div className="supqn1-card">
           <div className="supqn1-content">

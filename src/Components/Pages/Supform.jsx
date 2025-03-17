@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ScrollReveal from 'scrollreveal';
 import { useSupplierContext } from '../../context/SupplierContext';
 import 'remixicon/fonts/remixicon.css';
-import Logo2 from '../Images/logo2.png';
+import mainLogo from '../Images/main logo.png';
 import helmet from '../Images/two.png';
 import './Pages.css';
 
@@ -220,51 +219,7 @@ export const Supform = () => {
     countryCode: supplierData.personalInfo.countryCode || '+234'
   });
 
-  useEffect(() => {
-    // Initialize ScrollReveal
-    const sr = ScrollReveal({
-      origin: 'top',
-      distance: '60px',
-      duration: 1000,
-      delay: 200
-    });
 
-    // Left Section Animations
-    sr.reveal('.left-section h1', { delay: 300 });
-    sr.reveal('.helmet-img', { 
-      delay: 400,
-      origin: 'left'
-    });
-    sr.reveal('.back-btn', { 
-      delay: 500,
-      origin: 'bottom'
-    });
-
-    // Right Section Animations
-    sr.reveal('.right-section', { 
-      delay: 300,
-      origin: 'right'
-    });
-    
-    // Form Elements Animations
-    sr.reveal('#supplierForm .input-group', { 
-      delay: 400,
-      interval: 100,
-      origin: 'right'
-    });
-    
-    sr.reveal('.question-text', { 
-      delay: 600,
-      origin: 'left'
-    });
-    
-    sr.reveal('.submit-btn', { 
-      delay: 700,
-      origin: 'bottom'
-    });
-
-    return () => sr.destroy();
-  }, []);
 
   const validateForm = () => {
     const errors = {};
@@ -319,7 +274,7 @@ export const Supform = () => {
 
   return (
     <div className="supform">
-      <img className="logo2" src={Logo2} alt="Groundcentered Logo" />
+      <img className="logo2" src={mainLogo} alt="Groundcentered Logo" />
       <div className="container">
         {/* Left Section */}
         <div className="left-section">
