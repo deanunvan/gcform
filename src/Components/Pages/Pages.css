@@ -401,9 +401,9 @@
 
 /* Equipment Image */
 .supqn1-image {
-  width: 400px;
-  height: 450px;
-  border-radius: 8px;
+  width: 340px;
+  height: 400px;
+  margin-top: 20px;
 }
 
 .supqn1-img{
