@@ -342,8 +342,9 @@
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
-        margin-left: 20px;
+        margin-left: 0;
         margin-top: -80px;
+        padding-bottom: 0;
     }
 
     .right-section {
@@ -397,6 +398,7 @@
 .supqn1-content {
   display: flex;
   gap: 90px;
+  margin-bottom: 20px;
 }
 
 /* Equipment Image */
