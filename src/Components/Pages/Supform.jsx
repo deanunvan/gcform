@@ -358,6 +358,7 @@ export const Supform = () => {
             </div>
 
             <div className="input-group"></div>
+            <div className="input-group">
               <div className="phone-input">
                 <select
                   id="country-code"
@@ -393,13 +394,7 @@ export const Supform = () => {
             </div>
 
             <p className="question-text">Answer a few questions ...!</p>
-            <button 
-              type="submit" 
-              className="submit-btn"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Loading...' : 'Get Started!'}
-            </button>
+            <button type="submit" className="submit-btn" disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Get Started!'}</button>
           </form>
         </div>
       </div>
