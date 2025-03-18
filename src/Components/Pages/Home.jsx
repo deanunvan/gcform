@@ -26,13 +26,13 @@ export const Home = () => {
               of Heavy Equipment <br /> with Ease</strong>
           </h1>
           <p className="subheading">
-            Save Time, Access Trusted Suppliers and Buyers. Enjoy <br /> 
-            Exclusive Discounts. All In One Platform.
+          We’re building a better way to buy and sell heavy equipment. <br />
+           Save time, access trusted suppliers and buyers,<br /> and enjoy exclusive discounts all on one platform.
           </p>
           <div className="orange-line-div">
             <div className="orange-line"></div>
             <div>
-              <h2>Join Our Waiting List</h2>
+              <h2>Join the waiting list for early access</h2>
               <p className="small-text">Fill Our Form Below</p>
             </div>
           </div>
