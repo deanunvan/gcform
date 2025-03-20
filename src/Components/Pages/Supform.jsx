@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSupplierContext } from '../../context/SupplierContext';
-import emailjs from '@emailjs/browser';
 import 'remixicon/fonts/remixicon.css';
+import { useBuyerContext } from '../../context/BuyerContext';
 import mainLogo from '../Images/main logo.png';
 import helmet from '../Images/two.png';
 import './Pages.css';
@@ -21,7 +20,7 @@ const countries = [
   { value: "+43", country: "AT", display: "🇦🇹 Austria +43" },
   { value: "+994", country: "AZ", display: "🇦🇿 Azerbaijan +994" },
   { value: "+1", country: "BS", display: "🇧🇸 Bahamas +1" },
-  { value: "+973", country: "BH", display: "🇧ahrain +973" },
+  { value: "+973", country: "BH", display: "🇧🇭 Bahrain +973" },
   { value: "+880", country: "BD", display: "🇧🇩 Bangladesh +880" },
   { value: "+1", country: "BB", display: "🇧🇧 Barbados +1" },
   { value: "+375", country: "BY", display: "🇧🇾 Belarus +375" },
@@ -34,8 +33,8 @@ const countries = [
   { value: "+267", country: "BW", display: "🇧🇼 Botswana +267" },
   { value: "+55", country: "BR", display: "🇧🇷 Brazil +55" },
   { value: "+673", country: "BN", display: "🇧🇳 Brunei +673" },
-  { value: "+359", country: "BG", display: "🇧ulgaria +359" },
-  { value: "+226", country: "BF", display: "🇧urkina Faso +226" },
+  { value: "+359", country: "BG", display: "🇧🇬 Bulgaria +359" },
+  { value: "+226", country: "BF", display: "🇧🇫 Burkina Faso +226" },
   { value: "+257", country: "BI", display: "🇧🇮 Burundi +257" },
   { value: "+855", country: "KH", display: "🇰🇭 Cambodia +855" },
   { value: "+237", country: "CM", display: "🇨🇲 Cameroon +237" },
@@ -209,16 +208,15 @@ const countries = [
 
 export const Supform = () => {
   const navigate = useNavigate();
-  const { supplierData, updatePersonalInfo } = useSupplierContext();
+  const { buyerData, updatePersonalInfo } = useBuyerContext();
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const formRef = useRef();
 
   const [formData, setFormData] = useState({
-    name: supplierData.personalInfo.name,
-    email: supplierData.personalInfo.email,
-    phone: supplierData.personalInfo.phone,
-    countryCode: supplierData.personalInfo.countryCode || '+234'
+    name: buyerData.personalInfo.name,
+    email: buyerData.personalInfo.email,
+    phone: buyerData.personalInfo.phone,
+    countryCode: buyerData.personalInfo.countryCode
   });
 
   const validateForm = () => {
@@ -238,6 +236,25 @@ export const Supform = () => {
     return Object.keys(errors).length === 0;
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setIsSubmitting(true);
+      try {
+        // Update context with form data
+        await updatePersonalInfo(formData);
+        // Simulate loading
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Navigate to first question
+        navigate('/supqn1');
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -253,80 +270,19 @@ export const Supform = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsSubmitting(true);
-      try {
-        // Capture form data using FormData API
-        const form = e.target;
-        const formData = new FormData(form);
-        const userResponses = {};
-
-        formData.forEach((value, key) => {
-          userResponses[key] = value;
-        });
-
-        // Save responses to localStorage
-        localStorage.setItem("responses", JSON.stringify(userResponses));
-        alert("Responses saved!");
-
-        // Send data to Google Sheets
-        const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            fullName: userResponses.name,
-            email: userResponses.email,
-            phone: userResponses.phone,
-            answers: [] // Add any additional answers here
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        // Send email using emailjs
-        await emailjs.sendForm("service_deanun", "template_npkvsk3", formRef.current, "NTI7EzEnQhRmmv3iq")
-          .then(
-            (result) => {
-              console.log("Email sent successfully:", result.text);
-              alert("Message sent!");
-              // Navigate to first question
-              navigate('/supqn1');
-            },
-            (error) => {
-              console.log("Email sending failed:", error.text);
-            }
-          );
-      } catch (error) {
-        console.error('Error:', error);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
   return (
-    <div className="supform">
+    <div className='buyform'>
       <img className="logo2" src={mainLogo} alt="Groundcentered Logo" />
       <div className="container">
-        {/* Left Section */}
         <div className="left-section">
-          <h1>Hi, Welcome <br /> Supplier!</h1>
+          <h1>Hi, Welcome Suplier!</h1>
           <img src={helmet} alt="Yellow Safety Helmet" className="helmet-img" />
-          <Link to="/" className="back-btn">
-            ←
-          </Link>
+          <Link to="/" className="back-btn">←</Link>
         </div>
 
-        {/* Right Section (Form) */}
         <div className="right-section">
           <h2>Join Our Waiting List.</h2>
-          <form id="supplierForm" ref={formRef} onSubmit={handleSubmit}>
+          <form id="buyerForm" onSubmit={handleSubmit}>
             <div className="input-group">
               <input
                 type="text"
@@ -337,7 +293,6 @@ export const Supform = () => {
                 required
                 placeholder="Full Name :"
                 className={formErrors.name ? 'error' : ''}
-                disabled={isSubmitting}
               />
               {formErrors.name && <span className="error-message">{formErrors.name}</span>}
             </div>
@@ -352,12 +307,10 @@ export const Supform = () => {
                 required
                 placeholder="Email :"
                 className={formErrors.email ? 'error' : ''}
-                disabled={isSubmitting}
               />
               {formErrors.email && <span className="error-message">{formErrors.email}</span>}
             </div>
 
-            <div className="input-group"></div>
             <div className="input-group">
               <div className="phone-input">
                 <select
@@ -366,7 +319,6 @@ export const Supform = () => {
                   value={formData.countryCode}
                   onChange={handleChange}
                   className="country-select"
-                  disabled={isSubmitting}
                 >
                   {countries.map((country) => (
                     <option 
@@ -387,18 +339,23 @@ export const Supform = () => {
                   required
                   placeholder="Phone Number"
                   className={formErrors.phone ? 'error' : ''}
-                  disabled={isSubmitting}
                 />
               </div>
               {formErrors.phone && <span className="error-message">{formErrors.phone}</span>}
             </div>
 
             <p className="question-text">Answer a few questions ...!</p>
-            <button type="submit" className="submit-btn" disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Get Started!'}</button>
+
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Loading...' : 'Get Started!'}
+            </button>
           </form>
         </div>
       </div>
-      {/* Footer */}
       <footer className="footer">
         <p>groundcentered.com © 2025 All Rights Reserved</p>
       </footer>
