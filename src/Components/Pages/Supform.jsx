@@ -235,9 +235,19 @@ export const Supform = () => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-
+  // https://script.google.com/macros/s/AKfycbz3Rz7r56rWwlj532vHq9b5xrWPoeMNHdymS0M966Zff9CtEh8mDHUbAr8JMBUTCNtcOQ/exec
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = "https://script.google.com/macros/s/AKfycbyMHohYjwMUci6A7gFLP8c7lGDhTm_KiVpGFG3TAXxLnifELqA9QagDHxFUjhtH10B3/exec"
+    fetch(url,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body:(`Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`) 
+    }).then(res=>res.text()).then(data=>{
+      alert(data)
+    }).catch(error=>console.log(error))
     if (validateForm()) {
       setIsSubmitting(true);
       try {
@@ -324,7 +334,7 @@ export const Supform = () => {
                     <option 
                       key={`${country.country}-${country.value}`}
                       value={country.value}
-                      data-country={country.country}
+                      data-country={country.value}
                     >
                       {country.display}
                     </option>

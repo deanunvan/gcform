@@ -87,7 +87,18 @@ export const Buyqn1 = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const url = "https://script.google.com/macros/s/AKfycbwQZiqWop2Wndcw4IGXBclE2wIYsf_psugJ992BPsofuwSJBt48dOnpInI7MvMCWq3SEQ/exec"
+    fetch(url,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body:(`Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`) 
+    }).then(res=>res.text()).then(data=>{
+      alert(data)
+    }).catch(error=>console.log(error))
     if (!otherInput.trim()) return;
     setIsLoading(true);
     try {
@@ -112,12 +123,12 @@ export const Buyqn1 = () => {
               <img src={qn1} alt="Drilling Equipment" className="supqn1-image" />
               <Link to='/buyform'><button className="supqn1-nav">←</button></Link>
             </div>
-            <div className="supqn1-question">
+            <div className="supqn1-question" onSubmit={handleSubmit}>
               <h2>1. What is your biggest challenge when sourcing equipment online?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Finding reliable suppliers' ? 'selected' : ''}`}
                 onClick={() => handleOptionSelect('Finding reliable suppliers')}
-                disabled={isLoading}
+                disabled={isLoading}  name="Answer1" 
               >
                 Finding reliable suppliers
               </button>

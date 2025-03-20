@@ -220,7 +220,7 @@ export const Buyform = () => {
   });
 
   const validateForm = () => {
-    const errors = {};
+    const errors = {}; 
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
     }
@@ -235,9 +235,19 @@ export const Buyform = () => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-
+  // https://script.google.com/macros/s/AKfycbz3Rz7r56rWwlj532vHq9b5xrWPoeMNHdymS0M966Zff9CtEh8mDHUbAr8JMBUTCNtcOQ/exec
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = "https://script.google.com/macros/s/AKfycbwBiXQWp7PElldwzEU-GcIZHNJhCGM3_1WzoESvCufaesAQd3pTfrwEBaVtt9jxVWGZTw/exec"
+    fetch(url,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body:(`Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`) 
+    }).then(res=>res.text()).then(data=>{
+      alert(data)
+    }).catch(error=>console.log(error))
     if (validateForm()) {
       setIsSubmitting(true);
       try {
