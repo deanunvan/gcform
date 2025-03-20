@@ -26,32 +26,31 @@ export const Supqn4 = () => {
     return () => sr.destroy();
   }, []);
 
-  const handleSubmit = async (e) => {
-    if(e) e.preventDefault();
-    if(!selectedOption) return;
+  const handleSubmission = async (option) => {
+    if (!option) return;
     setIsLoading(true);
-    // Use your Google Apps Script URL here
-    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      // Update the answer in context
-      await updateAnswer(4, selectedOption);
-      // Submit answer to Google Sheets with Answer4 parameter
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `Answer4=${encodeURIComponent(selectedOption)}`
-      });
-      const result = await response.text();
-      console.log('Response from Google Sheets:', result);
-      // Navigate to the next question
+      // Update context and navigate immediately
+      await updateAnswer(4, option);
       navigate('/supqn5');
+
+      // Background submission to Google Sheets
+      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer4=${encodeURIComponent(option)}`
+      }).catch(error => console.error('Submission error:', error));
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error updating answer:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    handleSubmission(option);
   };
 
   return (
@@ -65,36 +64,27 @@ export const Supqn4 = () => {
               <Link to='/supqn3'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>
-                4. What features would make an online marketplace valuable for your business?
-              </h2>
+              <h2>4. What features would make an online marketplace valuable for your business?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Easy payment processing' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Easy payment processing')}
+                onClick={() => handleOptionSelect('Easy payment processing')}
                 disabled={isLoading}
               >
                 Easy payment processing
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Wide consumer reach' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Wide consumer reach')}
+                onClick={() => handleOptionSelect('Wide consumer reach')}
                 disabled={isLoading}
               >
                 Wide consumer reach
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Both' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Both')}
+                onClick={() => handleOptionSelect('Both')}
                 disabled={isLoading}
               >
                 Both
-              </button>
-              <button 
-                className="supqn1-submit-button"
-                onClick={handleSubmit}
-                disabled={isLoading || !selectedOption}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

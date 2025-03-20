@@ -19,98 +19,48 @@ export const Buyqn1 = () => {
       duration: 2500,
       delay: 400
     });
-
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
-    // Input group animation
-    sr.reveal('.supqn1-input-group', {
-      origin: 'bottom',
-      delay: 1400,
-      distance: '30px'
-    });
-
-    // Progress dots animation
-    sr.reveal('.supqn1-dot', {
-      origin: 'bottom',
-      interval: 100,
-      delay: 1600,
-      distance: '20px'
-    });
-
+    
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
+    sr.reveal('.supqn1-input-group', { origin: 'bottom', delay: 1400, distance: '30px' });
+    
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmission = async (answer) => {
+    if (!answer) return;
     setIsLoading(true);
     try {
-      await updateAnswer(1, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await updateAnswer(1, answer);
       navigate('/buyqn2');
-    } catch (error) {
-      console.error('Error:', error);
+
+      // Background submission to Google Sheets
+      const url = "https://script.google.com/macros/s/AKfycbzxhNeYtz_ChZxub6OJ13FXf33YNkxMB3SzQgvs9fT8eLjZSJtlLZbae3E0AdOpiNXwng/exec";
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer1=${encodeURIComponent(answer)}`
+      }).catch(error => console.error('Submission error:', error));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setOtherInput(""); // Clear other input
+    handleSubmission(option);
+  };
+
+  const handleOtherSubmit = (e) => {
     e.preventDefault();
-    const url = "https://script.google.com/macros/s/AKfycbwQZiqWop2Wndcw4IGXBclE2wIYsf_psugJ992BPsofuwSJBt48dOnpInI7MvMCWq3SEQ/exec"
-    fetch(url,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body:(`Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`) 
-    }).then(res=>res.text()).then(data=>{
-      alert(data)
-    }).catch(error=>console.log(error))
-    if (!otherInput.trim()) return;
-    setIsLoading(true);
-    try {
-      await updateAnswer(1, otherInput);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate('/buyqn2');
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    const answer = otherInput.trim();
+    if (!answer) return;
+    setSelectedOption(""); // Clear main option
+    handleSubmission(answer);
   };
 
   return (
@@ -121,25 +71,36 @@ export const Buyqn1 = () => {
           <div className="supqn1-content">
             <div className="supqn1-img">
               <img src={qn1} alt="Drilling Equipment" className="supqn1-image" />
-              <Link to='/buyform'><button className="supqn1-nav">←</button></Link>
+              <Link to='/buyform'>
+                <button className="supqn1-nav">←</button>
+              </Link>
             </div>
-            <div className="supqn1-question" onSubmit={handleSubmit}>
+            <div className="supqn1-question">
               <h2>1. What is your biggest challenge when sourcing equipment online?</h2>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Finding reliable suppliers' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Finding reliable suppliers')}
-                disabled={isLoading}  name="Answer1" 
-              >
-                Finding reliable suppliers
-              </button>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Ensuring product quality' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Ensuring product quality')}
-                disabled={isLoading}
-              >
-                Ensuring product quality
-              </button>
-              <div className="supqn1-input-group">
+              
+              {/* Main Options */}
+              <div className="supqn1-options">
+                <button 
+                  type="button"
+                  className={`supqn1-button ${selectedOption === 'Finding reliable suppliers' ? 'selected' : ''}`}
+                  onClick={() => handleOptionSelect('Finding reliable suppliers')}
+                  disabled={isLoading}
+                >
+                  Finding reliable suppliers
+                </button>
+                
+                <button 
+                  type="button"
+                  className={`supqn1-button ${selectedOption === 'Ensuring product quality' ? 'selected' : ''}`}
+                  onClick={() => handleOptionSelect('Ensuring product quality')}
+                  disabled={isLoading}
+                >
+                  Ensuring product quality
+                </button>
+              </div>
+
+              {/* Other Input with Submit */}
+              <form onSubmit={handleOtherSubmit} className="supqn1-input-group">
                 <span className="supqn1-label">Other:</span>
                 <div className="supqn1-input-with-button">
                   <textarea 
@@ -150,17 +111,15 @@ export const Buyqn1 = () => {
                     rows="1"
                     disabled={isLoading}
                   />
-                  {otherInput && (
-                    <button 
-                      className="supqn1-submit-button"
-                      onClick={handleSubmit}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Loading...' : 'Submit'}
-                    </button>
-                  )}
+                  <button 
+                    type="submit"
+                    className="supqn1-submit-button"
+                    disabled={!otherInput.trim() || isLoading}
+                  >
+                    {isLoading ? '...' : 'Submit'}
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -178,5 +137,3 @@ export const Buyqn1 = () => {
     </div>
   );
 };
-
-

@@ -26,31 +26,31 @@ export const Supqn2 = () => {
     return () => sr.destroy();
   }, []);
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    if (!selectedOption) return;
+  const handleSubmission = async (option) => {
+    if (!option) return;
     setIsLoading(true);
-    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      // Update answer in context
-      await updateAnswer(2, selectedOption);
-      // Submit answer to Google Sheets
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `Answer2=${encodeURIComponent(selectedOption)}`
-      });
-      const result = await response.text();
-      console.log('Response from Google Sheets:', result);
-      // Navigate to the next page
+      // Update context and navigate immediately
+      await updateAnswer(2, option);
       navigate('/supqn3');
+
+      // Background submission to Google Sheets
+      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer2=${encodeURIComponent(option)}`
+      }).catch(error => console.error('Submission error:', error));
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error updating answer:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    handleSubmission(option);
   };
 
   return (
@@ -67,31 +67,24 @@ export const Supqn2 = () => {
               <h2>2. How do you currently sell your equipment?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Online marketplace' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Online marketplace')}
+                onClick={() => handleOptionSelect('Online marketplace')}
                 disabled={isLoading}
               >
                 Online marketplace
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Personal website' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Personal website')}
+                onClick={() => handleOptionSelect('Personal website')}
                 disabled={isLoading}
               >
                 Personal website
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'In-person sales' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('In-person sales')}
+                onClick={() => handleOptionSelect('In-person sales')}
                 disabled={isLoading}
               >
                 In-person sales
-              </button>
-              <button 
-                className="supqn1-submit-button"
-                onClick={handleSubmit}
-                disabled={isLoading || !selectedOption}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

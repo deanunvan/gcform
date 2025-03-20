@@ -24,39 +24,39 @@ export const Supqn6 = () => {
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
     sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
+    
     return () => sr.destroy();
   }, []);
 
-  const handleSubmit = async (e) => {
-    if(e) e.preventDefault();
-    if(!selectedOption) return;
+  const handleSubmission = async (option) => {
+    if (!option) return;
     setIsLoading(true);
-    // Replace this URL with your actual Google Apps Script URL for question 6 submission
-    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      // Update answer in context
-      await updateAnswer(6, selectedOption);
-      // Optionally, if you need to submit to a waiting list, call that function
-      if(submitToWaitingList) {
-        await submitToWaitingList();
-      }
-      // Submit answer to Google Sheets with Answer6 parameter
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `Answer6=${encodeURIComponent(selectedOption)}`
-      });
-      const result = await response.text();
-      console.log('Response from Google Sheets:', result);
-      // Navigate to the thank-you page
+      // Update context and navigate immediately
+      await updateAnswer(6, option);
       navigate('/thank-you');
+
+      // Background submissions
+      const sheetsUrl = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(sheetsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer6=${encodeURIComponent(option)}`
+      }).catch(error => console.error('Sheets submission error:', error));
+
+      if (submitToWaitingList) {
+        submitToWaitingList().catch(error => console.error('Waiting list error:', error));
+      }
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error updating answer:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    handleSubmission(option);
   };
 
   return (
@@ -73,24 +73,17 @@ export const Supqn6 = () => {
               <h2>6. Would you pay a small commission on successful transactions?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Yes')}
+                onClick={() => handleOptionSelect('Yes')}
                 disabled={isLoading}
               >
                 Yes
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('No')}
+                onClick={() => handleOptionSelect('No')}
                 disabled={isLoading}
               >
                 No
-              </button>
-              <button 
-                className="supqn1-submit-button"
-                onClick={handleSubmit}
-                disabled={isLoading || !selectedOption}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

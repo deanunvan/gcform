@@ -235,10 +235,10 @@ export const Buyform = () => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-  // https://script.google.com/macros/s/AKfycbz3Rz7r56rWwlj532vHq9b5xrWPoeMNHdymS0M966Zff9CtEh8mDHUbAr8JMBUTCNtcOQ/exec
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "https://script.google.com/macros/s/AKfycbwBiXQWp7PElldwzEU-GcIZHNJhCGM3_1WzoESvCufaesAQd3pTfrwEBaVtt9jxVWGZTw/exec"
+    const url = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec"
     fetch(url,{
       method: 'POST',
       headers: {

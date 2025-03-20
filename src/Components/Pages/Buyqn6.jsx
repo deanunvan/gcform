@@ -19,52 +19,41 @@ export const Buyqn6 = () => {
       delay: 400
     });
 
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
 
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = async (option) => {
     setSelectedOption(option);
     setIsLoading(true);
-    updateAnswer('question6', option);
-    
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Update context and navigate immediately
+      await updateAnswer(6, option);
       navigate('/thank-you');
-    }, 1500);
+
+      // Submit to Google Sheets in the background
+      const sheetsUrl = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
+      fetch(sheetsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer6=${encodeURIComponent(option)}`
+      })
+        .then(response => response.text())
+        .catch(error => console.error('Sheets submission error:', error));
+
+      // Submit to waiting list in the background
+      submitToWaitingList()
+        .catch(error => console.error('Waiting list submission error:', error));
+    } catch (error) {
+      console.error('Error updating answer:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -117,5 +106,3 @@ export const Buyqn6 = () => {
     </div>
   );
 };
-
-

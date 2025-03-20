@@ -24,35 +24,35 @@ export const Supqn3 = () => {
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
     sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
+    
     return () => sr.destroy();
   }, []);
 
-  const handleSubmit = async (e) => {
-    if(e) e.preventDefault();
-    if(!selectedOption) return;
+  const handleSubmission = async (option) => {
+    if (!option) return;
     setIsLoading(true);
-    // Update the URL as needed for your Google Apps Script deployment.
-    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      // Update answer in context
-      await updateAnswer(3, selectedOption);
-      // Submit answer to Google Sheets with Answer3 parameter
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `Answer3=${encodeURIComponent(selectedOption)}`
-      });
-      const result = await response.text();
-      console.log('Response from Google Sheets:', result);
-      // Navigate to the next page
+      // Update context and navigate immediately
+      await updateAnswer(3, option);
       navigate('/supqn4');
+
+      // Background submission to Google Sheets
+      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer3=${encodeURIComponent(option)}`
+      }).catch(error => console.error('Submission error:', error));
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error updating answer:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    handleSubmission(option);
   };
 
   return (
@@ -66,37 +66,28 @@ export const Supqn3 = () => {
               <Link to='/supqn2'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>
-                3. Would free onboarding and professional product listing<br /> 
-                content creation be helpful?
-              </h2>
+              <h2>3. Would free onboarding and professional product listing<br /> 
+                content creation be helpful?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Yes')}
+                onClick={() => handleOptionSelect('Yes')}
                 disabled={isLoading}
               >
                 Yes
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('No')}
+                onClick={() => handleOptionSelect('No')}
                 disabled={isLoading}
               >
                 No
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Maybe' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Maybe')}
+                onClick={() => handleOptionSelect('Maybe')}
                 disabled={isLoading}
               >
                 Maybe
-              </button>
-              <button 
-                className="supqn1-submit-button"
-                onClick={handleSubmit}
-                disabled={isLoading || !selectedOption}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

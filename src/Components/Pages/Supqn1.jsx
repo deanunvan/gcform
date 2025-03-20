@@ -30,31 +30,37 @@ export const Supqn1 = () => {
     return () => sr.destroy();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const answer = otherInput.trim() ? otherInput : selectedOption;
-
-    if (!answer) return; // Prevent submission if no answer is selected
-
+  const handleSubmission = async (answer) => {
+    if (!answer) return;
     setIsLoading(true);
     try {
-      // Update answer in context
       await updateAnswer(1, answer);
-      // Submit answer to Google Sheets
-      await fetch("https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `Answer1=${answer}`
-      });
-      // Navigate to next question after submission
       navigate('/supqn2');
-    } catch (error) {
-      console.error('Error:', error);
+
+      // Background submission to Google Sheets
+      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `Answer1=${encodeURIComponent(answer)}`
+      }).catch(error => console.error('Submission error:', error));
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setOtherInput(""); // Clear other input
+    handleSubmission(option);
+  };
+
+  const handleOtherSubmit = (e) => {
+    e.preventDefault();
+    const answer = otherInput.trim();
+    if (!answer) return;
+    setSelectedOption(""); // Clear main option
+    handleSubmission(answer);
   };
 
   return (
@@ -69,38 +75,47 @@ export const Supqn1 = () => {
             </div>
             <div className="supqn1-question">
               <h2>1. What is your biggest challenge in selling equipment online?</h2>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Technical difficulties' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Technical difficulties')}
-                disabled={isLoading}
-              >
-                Technical difficulties
-              </button>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Finding buyers' ? 'selected' : ''}`}
-                onClick={() => setSelectedOption('Finding buyers')}
-                disabled={isLoading}
-              >
-                Finding buyers
-              </button>
-              <div className="supqn1-input-group">
-                <span className="supqn1-label">Other:</span>
-                <textarea 
-                  placeholder="Please Specify" 
-                  className="supqn1-input"
-                  value={otherInput}
-                  onChange={(e) => setOtherInput(e.target.value)}
-                  rows="1"
+              
+              {/* Main Options */}
+              <div className="supqn1-options">
+                <button 
+                  className={`supqn1-button ${selectedOption === 'Technical difficulties' ? 'selected' : ''}`}
+                  onClick={() => handleOptionSelect('Technical difficulties')}
                   disabled={isLoading}
-                />
+                >
+                  Technical difficulties
+                </button>
+                
+                <button 
+                  className={`supqn1-button ${selectedOption === 'Finding buyers' ? 'selected' : ''}`}
+                  onClick={() => handleOptionSelect('Finding buyers')}
+                  disabled={isLoading}
+                >
+                  Finding buyers
+                </button>
               </div>
-              <button 
-                className="supqn1-submit-button"
-                onClick={handleSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
-              </button>
+
+              {/* Other Input with Submit */}
+              <form onSubmit={handleOtherSubmit} className="supqn1-input-group">
+                <span className="supqn1-label">Other:</span>
+                <div className="supqn1-input-with-button">
+                  <textarea 
+                    placeholder="Please Specify" 
+                    className="supqn1-input"
+                    value={otherInput}
+                    onChange={(e) => setOtherInput(e.target.value)}
+                    rows="1"
+                    disabled={isLoading}
+                  />
+                  <button 
+                    type="submit"
+                    className="supqn1-submit-button"
+                    disabled={!otherInput.trim() || isLoading}
+                  >
+                    {isLoading ? '...' : 'Submit'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
