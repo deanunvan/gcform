@@ -238,7 +238,7 @@ export const Supform = () => {
   // https://script.google.com/macros/s/AKfycbz3Rz7r56rWwlj532vHq9b5xrWPoeMNHdymS0M966Zff9CtEh8mDHUbAr8JMBUTCNtcOQ/exec
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "https://script.google.com/macros/s/AKfycbyMHohYjwMUci6A7gFLP8c7lGDhTm_KiVpGFG3TAXxLnifELqA9QagDHxFUjhtH10B3/exec"
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec"
     fetch(url,{
       method: 'POST',
       headers: {

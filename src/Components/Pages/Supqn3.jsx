@@ -19,53 +19,37 @@ export const Supqn3 = () => {
       delay: 400
     });
 
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmit = async (e) => {
+    if(e) e.preventDefault();
+    if(!selectedOption) return;
     setIsLoading(true);
+    // Update the URL as needed for your Google Apps Script deployment.
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      await updateAnswer(3, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update answer in context
+      await updateAnswer(3, selectedOption);
+      // Submit answer to Google Sheets with Answer3 parameter
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `Answer3=${encodeURIComponent(selectedOption)}`
+      });
+      const result = await response.text();
+      console.log('Response from Google Sheets:', result);
+      // Navigate to the next page
       navigate('/supqn4');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error submitting answer:', error);
     } finally {
       setIsLoading(false);
     }
@@ -82,27 +66,37 @@ export const Supqn3 = () => {
               <Link to='/supqn2'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>3. Would free onboarding and professional product listing <br /> content creation be helpful?</h2>
+              <h2>
+                3. Would free onboarding and professional product listing<br /> 
+                content creation be helpful?
+              </h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Yes')}
+                onClick={() => setSelectedOption('Yes')}
                 disabled={isLoading}
               >
                 Yes
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('No')}
+                onClick={() => setSelectedOption('No')}
                 disabled={isLoading}
               >
                 No
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Maybe' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Maybe')}
+                onClick={() => setSelectedOption('Maybe')}
                 disabled={isLoading}
               >
                 Maybe
+              </button>
+              <button 
+                className="supqn1-submit-button"
+                onClick={handleSubmit}
+                disabled={isLoading || !selectedOption}
+              >
+                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

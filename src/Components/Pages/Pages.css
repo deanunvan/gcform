@@ -427,6 +427,11 @@
   margin-bottom: 15px;
 }
 
+.supqn1-submit-button{
+  margin-top: 200px;
+  margin-right: 150px;
+}
+
 /* Option buttons */
 .supqn1-button {
   width: 100%;
@@ -553,6 +558,11 @@
 
   .supqn1-content {
     gap: 20px;
+  }
+
+  .supqn1-submit-button{
+    margin-top: 430px;
+    margin-right: 20px;
   }
 }
 

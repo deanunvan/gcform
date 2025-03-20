@@ -18,54 +18,36 @@ export const Supqn2 = () => {
       duration: 2500,
       delay: 400
     });
-
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!selectedOption) return;
     setIsLoading(true);
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      await updateAnswer(2, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update answer in context
+      await updateAnswer(2, selectedOption);
+      // Submit answer to Google Sheets
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `Answer2=${encodeURIComponent(selectedOption)}`
+      });
+      const result = await response.text();
+      console.log('Response from Google Sheets:', result);
+      // Navigate to the next page
       navigate('/supqn3');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error submitting answer:', error);
     } finally {
       setIsLoading(false);
     }
@@ -85,24 +67,31 @@ export const Supqn2 = () => {
               <h2>2. How do you currently sell your equipment?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Online marketplace' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Online marketplace')}
+                onClick={() => setSelectedOption('Online marketplace')}
                 disabled={isLoading}
               >
                 Online marketplace
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Personal website' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Personal website')}
+                onClick={() => setSelectedOption('Personal website')}
                 disabled={isLoading}
               >
                 Personal website
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'In-person sales' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('In-person sales')}
+                onClick={() => setSelectedOption('In-person sales')}
                 disabled={isLoading}
               >
                 In-person sales
+              </button>
+              <button 
+                className="supqn1-submit-button"
+                onClick={handleSubmit}
+                disabled={isLoading || !selectedOption}
+              >
+                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

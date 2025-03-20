@@ -18,54 +18,37 @@ export const Supqn4 = () => {
       duration: 2500,
       delay: 400
     });
-
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmit = async (e) => {
+    if(e) e.preventDefault();
+    if(!selectedOption) return;
     setIsLoading(true);
+    // Use your Google Apps Script URL here
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      await updateAnswer(4, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update the answer in context
+      await updateAnswer(4, selectedOption);
+      // Submit answer to Google Sheets with Answer4 parameter
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `Answer4=${encodeURIComponent(selectedOption)}`
+      });
+      const result = await response.text();
+      console.log('Response from Google Sheets:', result);
+      // Navigate to the next question
       navigate('/supqn5');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error submitting answer:', error);
     } finally {
       setIsLoading(false);
     }
@@ -82,27 +65,36 @@ export const Supqn4 = () => {
               <Link to='/supqn3'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>4. What features would make an online marketplace valuable for your business?</h2>
+              <h2>
+                4. What features would make an online marketplace valuable for your business?
+              </h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Easy payment processing' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Easy payment processing')}
+                onClick={() => setSelectedOption('Easy payment processing')}
                 disabled={isLoading}
               >
                 Easy payment processing
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Wide consumer reach' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Wide consumer reach')}
+                onClick={() => setSelectedOption('Wide consumer reach')}
                 disabled={isLoading}
               >
                 Wide consumer reach
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Both' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Both')}
+                onClick={() => setSelectedOption('Both')}
                 disabled={isLoading}
               >
                 Both
+              </button>
+              <button 
+                className="supqn1-submit-button"
+                onClick={handleSubmit}
+                disabled={isLoading || !selectedOption}
+              >
+                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

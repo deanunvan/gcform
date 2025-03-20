@@ -19,53 +19,37 @@ export const Supqn5 = () => {
       delay: 400
     });
 
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmit = async (e) => {
+    if(e) e.preventDefault();
+    if(!selectedOption) return;
     setIsLoading(true);
+    // Replace the URL below with your actual Google Apps Script URL
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
     try {
-      await updateAnswer(5, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update answer in context
+      await updateAnswer(5, selectedOption);
+      // Submit answer to Google Sheets with Answer5 parameter
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `Answer5=${encodeURIComponent(selectedOption)}`
+      });
+      const result = await response.text();
+      console.log('Response from Google Sheets:', result);
+      // Navigate to the next page
       navigate('/supqn6');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error submitting answer:', error);
     } finally {
       setIsLoading(false);
     }
@@ -85,24 +69,31 @@ export const Supqn5 = () => {
               <h2>5. How often do you update or expand your product catalog?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Daily/Weekly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Daily/Weekly')}
+                onClick={() => setSelectedOption('Daily/Weekly')}
                 disabled={isLoading}
               >
                 Daily/Weekly
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Monthly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Monthly')}
+                onClick={() => setSelectedOption('Monthly')}
                 disabled={isLoading}
               >
                 Monthly
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Rarely' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Rarely')}
+                onClick={() => setSelectedOption('Rarely')}
                 disabled={isLoading}
               >
                 Rarely
+              </button>
+              <button 
+                className="supqn1-submit-button"
+                onClick={handleSubmit}
+                disabled={isLoading || !selectedOption}
+              >
+                {isLoading ? 'Loading...' : 'Next'}
               </button>
             </div>
           </div>

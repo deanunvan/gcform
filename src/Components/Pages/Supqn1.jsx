@@ -20,78 +20,40 @@ export const Supqn1 = () => {
       delay: 400
     });
 
-    // Logo animation
-    sr.reveal('.logo2', {
-      origin: 'top',
-      delay: 200
-    });
-
-    // Image and back button animations
-    sr.reveal('.supqn1-image', {
-      origin: 'left',
-      delay: 600,
-      distance: '100px'
-    });
-
-    sr.reveal('.supqn1-nav', {
-      origin: 'bottom',
-      delay: 800,
-      distance: '20px'
-    });
-
-    // Question section animations
-    sr.reveal('.supqn1-question h2', {
-      origin: 'right',
-      delay: 1000,
-      distance: '80px'
-    });
-
-    // Buttons animation with interval
-    sr.reveal('.supqn1-button', {
-      origin: 'right',
-      interval: 200,
-      delay: 1200,
-      distance: '50px'
-    });
-
-    // Input group animation
-    sr.reveal('.supqn1-input-group', {
-      origin: 'bottom',
-      delay: 1400,
-      distance: '30px'
-    });
+    sr.reveal('.logo2', { origin: 'top', delay: 200 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
+    sr.reveal('.supqn1-input-group', { origin: 'bottom', delay: 1400, distance: '30px' });
 
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
-    setIsLoading(true);
-    try {
-      await updateAnswer(1, option);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate('/supqn2');
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const answer = otherInput.trim() ? otherInput : selectedOption;
 
-  const handleSubmit = async () => {
-    if (!otherInput.trim()) return;
+    if (!answer) return; // Prevent submission if no answer is selected
+
     setIsLoading(true);
     try {
-      await updateAnswer(1, otherInput);
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update answer in context
+      await updateAnswer(1, answer);
+      // Submit answer to Google Sheets
+      await fetch("https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `Answer1=${answer}`
+      });
+      // Navigate to next question after submission
       navigate('/supqn2');
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setIsLoading(false);
-      setOtherInput("");
     }
   };
 
@@ -109,40 +71,36 @@ export const Supqn1 = () => {
               <h2>1. What is your biggest challenge in selling equipment online?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Technical difficulties' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Technical difficulties')}
+                onClick={() => setSelectedOption('Technical difficulties')}
                 disabled={isLoading}
               >
                 Technical difficulties
               </button>
               <button 
                 className={`supqn1-button ${selectedOption === 'Finding buyers' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Finding buyers')}
+                onClick={() => setSelectedOption('Finding buyers')}
                 disabled={isLoading}
               >
                 Finding buyers
               </button>
               <div className="supqn1-input-group">
                 <span className="supqn1-label">Other:</span>
-                <div className="supqn1-input-with-button">
-                  <textarea 
-                    placeholder="Please Specify" 
-                    className="supqn1-input"
-                    value={otherInput}
-                    onChange={(e) => setOtherInput(e.target.value)}
-                    rows="1"
-                    disabled={isLoading}
-                  />
-                  {otherInput && (
-                    <button 
-                      className="supqn1-submit-button"
-                      onClick={handleSubmit}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Loading...' : 'Submit'}
-                    </button>
-                  )}
-                </div>
+                <textarea 
+                  placeholder="Please Specify" 
+                  className="supqn1-input"
+                  value={otherInput}
+                  onChange={(e) => setOtherInput(e.target.value)}
+                  rows="1"
+                  disabled={isLoading}
+                />
               </div>
+              <button 
+                className="supqn1-submit-button"
+                onClick={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Loading...' : 'Next'}
+              </button>
             </div>
           </div>
         </div>
