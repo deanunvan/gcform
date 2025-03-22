@@ -659,7 +659,6 @@
 
 /* Thank You Page Styles */
 .thank-you-page {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -698,14 +697,21 @@
   background-color: #ff6b00;
   color: white;
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 10px;
   font-weight: 600;
   transition: all 0.3s ease;
+  border: none;
+  margin-bottom: 20px;
 }
 
 .home-button:hover {
   background-color: #ff8533;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thank-you-image{
+  width: 50%;
+  height: 50%;
 }
 

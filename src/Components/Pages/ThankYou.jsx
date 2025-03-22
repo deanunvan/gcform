@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
 import Logo2 from '../Images/logo2.png';
+import qn1 from '../Images/tik.png';
 import './Pages.css';
 
 export const ThankYou = () => {
@@ -10,8 +11,8 @@ export const ThankYou = () => {
   useEffect(() => {
     const sr = ScrollReveal({
       distance: '60px',
-      duration: 2500,
-      delay: 400
+      duration: 800,
+      delay: 200
     });
 
     // Logo animation
@@ -35,7 +36,13 @@ export const ThankYou = () => {
 
     sr.reveal('.home-button', {
       origin: 'bottom',
-      delay: 1000,
+      delay: 900,
+      distance: '20px'
+    });
+
+    sr.reveal('.thank-you-image', {
+      origin: 'bottom',
+      delay: 200,
       distance: '20px'
     });
 
@@ -48,16 +55,19 @@ export const ThankYou = () => {
   };
 
   return (
-    <div className="thank-you-page">
+    <div>
+      <div className="thank-you-page">
       <img className="logo2" src={Logo2} alt="Groundcentered Logo" />
       <div className="thank-you-content">
         <h1>Thank You!</h1>
+        <img src={qn1} alt="Drilling Equipment" className="thank-you-image" />
         <p>You have successfully joined our waiting list. We will keep you posted.</p>
         <button onClick={handleReload} className="home-button">
-          done
+          Done!
         </button>
       </div>
-      <footer className="footer">
+    </div>
+    <footer className="footer">
         <p>groundcentered.com © 2025 All Rights Reserved</p>
       </footer>
     </div>

@@ -15,16 +15,17 @@ export const Supqn5 = () => {
   useEffect(() => {
     const sr = ScrollReveal({
       distance: '60px',
-      duration: 2500,
-      delay: 400
+      duration: 600,
+      delay: 200
     });
 
-    sr.reveal('.logo2', { origin: 'top', delay: 200 });
-    sr.reveal('.supqn1-image', { origin: 'left', delay: 600, distance: '100px' });
-    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 800, distance: '20px' });
-    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 1000, distance: '80px' });
-    sr.reveal('.supqn1-button', { origin: 'right', interval: 200, delay: 1200, distance: '50px' });
-    
+    sr.reveal('.logo2', { origin: 'top', delay: 800 });
+    sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
+    sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
+    sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });
+    sr.reveal('.supqn1-button', { origin: 'right', interval: 100, delay: 1000, distance: '50px' });
+    sr.reveal('.supqn1-input-group', { origin: 'bottom', delay: 1200, distance: '30px' });
+
     return () => sr.destroy();
   }, []);
 
