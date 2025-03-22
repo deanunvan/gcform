@@ -665,6 +665,7 @@
   justify-content: space-between;
   padding: 2rem;
   background-color: #ffffff;
+  height: 94vh;
 }
 
 .thank-you-content {
@@ -715,3 +716,9 @@
   height: 50%;
 }
 
+@media (max-width: 768px) {
+  .thank-you-image{
+    width: 100%;
+    height: 100%;
+  }
+}
