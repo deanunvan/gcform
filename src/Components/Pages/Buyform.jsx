@@ -323,23 +323,27 @@ export const Buyform = () => {
 
             <div className="input-group">
               <div className="phone-input">
-                <select
-                  id="country-code"
-                  name="countryCode"
-                  value={formData.countryCode}
-                  onChange={handleChange}
-                  className="country-select"
-                >
-                  {countries.map((country) => (
-                    <option 
-                      key={`${country.country}-${country.value}`}
-                      value={country.value}
-                      data-country={country.country}
-                    >
-                      {country.display}
-                    </option>
-                  ))}
-                </select>
+              <select
+  id="country-code"
+  name="countryCode"
+  value={formData.countryCode}
+  onChange={handleChange}
+  className="country-select"
+>
+  <option value="" disabled>
+    Select a country
+  </option>
+  {countries.map((country) => (
+    <option 
+      key={`${country.country}-${country.value}`}
+      value={country.value}
+      data-country={country.country}
+    >
+      {country.display}
+    </option>
+  ))}
+</select>
+
                 <input
                   type="tel"
                   id="phone"

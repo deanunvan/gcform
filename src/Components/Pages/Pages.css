@@ -371,10 +371,20 @@
   }
 
   #country-code{
-    width: 30px;
+    width: 60px;
+  }
+
+  .country-select {
+    min-width: 50px;
   }
 }
+#country-code{
+  width: 60px;
+}
 
+.country-select {
+  min-width: 50px;
+}
 
 
 
