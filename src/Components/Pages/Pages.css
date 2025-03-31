@@ -222,7 +222,7 @@
     background: #ddd;
     border: none;
     padding: 10px 15px;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     cursor: pointer;
     border-radius: 5px;
     margin-top: 20px;
@@ -385,6 +385,70 @@
 .country-select {
   min-width: 50px;
 }
+
+@media (max-width: 375px) {
+  #country-code{
+    width: 58px;
+  }
+  
+  /* .country-select {
+    min-width: 50px;
+  } */
+    .container {
+     padding: 5;
+  }
+
+  .logo2 {
+    margin: 0 5px; 
+  }
+ 
+  .left-section h1{
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
+  .helmet-img {
+    margin-top: -4px;
+    width: 250px;
+    height: 150px;
+
+}
+
+.back-btn {
+  background: #ddd;
+  padding: 1px 15px;
+  font-size: 1.4rem;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Right Section */
+.right-section {
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.right-section h2{
+  font-size: 1.2rem;
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.input-group input {
+  padding: 9px 12px;
+  font-size: 0.8rem;
+  height: 40px;
+}
+
+.input-group input::placeholder {
+  color: #666;
+  font-size: 0.7rem;
+}
+
+}
+
 
 
 
