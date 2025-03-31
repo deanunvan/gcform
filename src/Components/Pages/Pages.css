@@ -449,7 +449,34 @@
 
 }
 
+@media (max-width: 390px) {
+  #country-code{
+    width: 10px;
+  }
+  
+  .country-select {
+    min-width: 50px;
+  }
+    .container {
+     padding: 15;
+  }
 
+  .logo2 {
+    margin: 0 5px; 
+  }
+ 
+  .left-section h1{
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
+  .helmet-img {
+    margin-top: -4px;
+    width: 250px;
+    height: 150px;
+
+}
+}
 
 
 /* General container styling */
