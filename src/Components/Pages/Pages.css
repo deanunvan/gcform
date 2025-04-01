@@ -238,7 +238,7 @@
 }
 
 .right-section h2{
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 20px;
     font-weight: 2rem;
 }
@@ -388,7 +388,7 @@
 
 @media (max-width: 375px) {
   #country-code{
-    width: 58px;
+    width: 60px;
   }
   
   /* .country-select {
@@ -450,10 +450,6 @@
 }
 
 @media (max-width: 390px) {
-  #country-code{
-    width: 40px;
-    padding-left: 20px;
-  }
   
   .country-select {
     min-width: 50px;
@@ -472,16 +468,17 @@
   }
 
   .helmet-img {
-    margin-top: -4px;
+    margin-top: -4px; 
     width: 250px;
     height: 150px;
 
-}
+  }
 
-.hero-text h1 {
-  font-size: 1.4rem;
-  margin-bottom: 0.8rem;
-}
+  .hero-text h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+
 }
 
 

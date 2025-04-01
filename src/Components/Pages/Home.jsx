@@ -32,7 +32,7 @@ export const Home = () => {
           <div className="orange-line-div">
             <div className="orange-line"></div>
             <div>
-              <h2>Join the waiting list for early access</h2>
+              <h2 className='h2'>Join the waiting list for early access</h2>
               <p className="small-text">Fill Our Form Below</p>
             </div>
           </div>

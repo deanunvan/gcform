@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime"; // Required for async/await support
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

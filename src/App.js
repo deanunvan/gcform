@@ -19,6 +19,8 @@ import { Supqn5 } from './Components/Pages/Supqn5';
 import { Supqn6 } from './Components/Pages/Supqn6';
 import { ThankYou } from './Components/Pages/ThankYou';
 import './App.css';
+import "react-phone-input-2/lib/style.css";
+
 
 function App() {
   return (
