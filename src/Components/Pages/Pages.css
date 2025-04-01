@@ -481,6 +481,15 @@
 
 }
 
+.dropdown-selected{
+  border-radius: 5px;
+}
+
+.dropdown-list{
+  border-radius: 10px;
+
+}
+
 
 /* General container styling */
 .supqn1-container {

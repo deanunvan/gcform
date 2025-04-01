@@ -330,7 +330,7 @@ export const Buyform = () => {
                     onClick={() => setIsOpen(!isOpen)}
                     style={{ 
                       cursor: 'pointer', 
-                      fontSize: '20px', 
+                      fontSize: '22px', 
                       border: '1px solid #ccc', 
                       padding: '3px', 
                       width: '60px',
@@ -342,7 +342,7 @@ export const Buyform = () => {
                     }}
                   >
                     {selectedCountry ? selectedCountry.display.split(' ')[0] : '🌐'}
-                    <span style={{ marginLeft: '4px', fontSize: '16px' }}>▼</span>
+                    <span style={{ marginLeft: '4px', fontSize: '14px', color: '#ccc', }}>▼</span>
                   </div>
                   {isOpen && (
                     <ul 

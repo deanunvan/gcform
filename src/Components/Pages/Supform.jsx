@@ -211,6 +211,8 @@ export const Supform = () => {
   const { buyerData, updatePersonalInfo } = useBuyerContext();
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // isOpen controls whether our custom dropdown is expanded
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: buyerData.personalInfo.name,
@@ -235,27 +237,25 @@ export const Supform = () => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-  // https://script.google.com/macros/s/AKfycbz3Rz7r56rWwlj532vHq9b5xrWPoeMNHdymS0M966Zff9CtEh8mDHUbAr8JMBUTCNtcOQ/exec
+
+  // https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec"
-    fetch(url,{
+    const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+    fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body:(`Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`) 
-    }).then(res=>res.text()).then(data=>{
-      alert(data)
-    }).catch(error=>console.log(error))
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `Name=${e.target.name.value}&Email=${e.target.email.value}&CountryCode=${e.target.countryCode.value}&Phone=${e.target.phone.value}`
+    })
+      .then(res => res.text())
+      .then(data => alert(data))
+      .catch(error => console.log(error));
+
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        // Update context with form data
         await updatePersonalInfo(formData);
-        // Simulate loading
         await new Promise(resolve => setTimeout(resolve, 1000));
-        // Navigate to first question
         navigate('/supqn1');
       } catch (error) {
         console.error('Error:', error);
@@ -267,17 +267,19 @@ export const Supform = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-    // Clear error when user starts typing
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (formErrors[name]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  // Get the selected country from our list
+  const selectedCountry = countries.find(c => c.value === formData.countryCode);
+
+  // When an option is clicked in our custom dropdown
+  const handleSelectCountry = (countryValue) => {
+    setFormData(prev => ({ ...prev, countryCode: countryValue }));
+    setIsOpen(false);
   };
 
   return (
@@ -322,24 +324,69 @@ export const Supform = () => {
             </div>
 
             <div className="input-group">
-              <div className="phone-input">
-                <select
-                  id="country-code"
-                  name="countryCode"
-                  value={formData.countryCode}
-                  onChange={handleChange}
-                  className="country-select"
-                >
-                  {countries.map((country) => (
-                    <option 
-                      key={`${country.country}-${country.value}`}
-                      value={country.value}
-                      data-country={country.value}
+              <div className="phone-input" style={{ position: 'relative' }}>
+                {/* Custom Dropdown */}
+                <div className="dropdown">
+                  <div 
+                    className="dropdown-selected" 
+                    onClick={() => setIsOpen(!isOpen)}
+                    style={{ 
+                      cursor: 'pointer', 
+                      fontSize: '22px', 
+                      border: '1px solid #ccc', 
+                      padding: '3px', 
+                      width: '60px',
+                      color: 'black',
+                      backgroundColor: 'white',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    {selectedCountry ? selectedCountry.display.split(' ')[0] : '🌐'}
+                    <span style={{ marginLeft: '4px', fontSize: '14px', color:'#ccc',}}>▼</span>
+                  </div>
+                  {isOpen && (
+                    <ul 
+                      className="dropdown-list" 
+                      style={{ 
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        zIndex: 1000,
+                        border: '1px solid #ccc', 
+                        margin: 0, 
+                        padding: '5px', 
+                        listStyle: 'none', 
+                        maxHeight: '150px', 
+                        overflowY: 'auto',
+                        color: 'White',
+                        backgroundColor: 'black',
+                        width: '100%'
+                      }}
                     >
-                      {country.display}
-                    </option>
-                  ))}
-                </select>
+                      {countries.map((country) => (
+                        <li 
+                          key={`${country.country}-${country.value}`} 
+                          onClick={() => handleSelectCountry(country.value)}
+                          style={{ padding: '5px', cursor: 'pointer' }}
+                        >
+                          {country.display}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Hidden input for form submission */}
+                <input 
+                  type="hidden" 
+                  id="country-code" 
+                  name="countryCode" 
+                  value={formData.countryCode} 
+                  onChange={handleChange} 
+                />
+
                 <input
                   type="tel"
                   id="phone"
