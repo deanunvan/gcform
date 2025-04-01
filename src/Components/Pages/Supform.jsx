@@ -358,11 +358,14 @@ export const Supform = () => {
                         margin: 0, 
                         padding: '5px', 
                         listStyle: 'none', 
-                        maxHeight: '150px', 
+                        maxHeight: '500px', 
                         overflowY: 'auto',
                         color: 'White',
                         backgroundColor: 'black',
-                        width: '100%'
+                        width: '60%',
+                        height: '500px',
+                        marginTop: '-330px',
+                        marginLeft: '100px',
                       }}
                     >
                       {countries.map((country) => (

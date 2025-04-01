@@ -356,12 +356,14 @@ export const Buyform = () => {
                         margin: 0, 
                         padding: '5px', 
                         listStyle: 'none', 
-                        maxHeight: '150px', 
+                        maxHeight: '500px', 
                         overflowY: 'auto',
-                        color: 'black',
-                        backgroundColor: 'white',
-                        width: '100%',
-                        marginTop: '-20px',
+                        color: 'white',
+                        backgroundColor: 'black',
+                        width: '60%',
+                        height: '500px',
+                        marginTop: '-330px',
+                        marginLeft: '100px',
                       }}
                     >
                       {countries.map((country) => (
