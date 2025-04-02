@@ -386,9 +386,47 @@
   min-width: 50px;
 }
 
+@media (max-width: 414px) {
+  .hero-text strong {
+    font-size: 1.2rem;
+    font-weight: bolder;
+  }
+}
+
 @media (max-width: 375px) {
   #country-code{
     width: 60px;
+  }
+
+  .hero-text strong {
+    font-size: 1rem;
+    font-weight: bolder;
+  }
+
+  .hero-text h1{
+    margin-top: -40px;
+  }
+
+  .hero-text h2 {
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  .subheading {
+    font-size: 13px;
+    margin-bottom: 1.5rem;
+  }
+
+  .header {
+    padding: 15px 5px;
+  }
+  
+  .logo {
+    margin-left: 15px;
+  }
+
+  .hero-image{
+    margin-top: -50px;
   }
   
   /* .country-select {
