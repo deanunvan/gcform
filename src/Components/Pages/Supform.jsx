@@ -332,9 +332,9 @@ export const Supform = () => {
                     onClick={() => setIsOpen(!isOpen)}
                     style={{ 
                       cursor: 'pointer', 
-                      fontSize: '22px', 
+                      fontSize: '18px', 
                       border: '1px solid #ccc', 
-                      padding: '3px', 
+                      padding: '1px', 
                       width: '60px',
                       color: 'black',
                       backgroundColor: 'white',
