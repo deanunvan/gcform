@@ -289,7 +289,7 @@ export const Buyform = () => {
         </div>
 
         <div className="right-section">
-          <h2>Join Our Waiting List.</h2>
+          <h2 className='join'>Join Our Waiting List.</h2>
           <form id="buyerForm" onSubmit={handleSubmit}>
             <div className="input-group">
               <input
@@ -330,10 +330,10 @@ export const Buyform = () => {
                     onClick={() => setIsOpen(!isOpen)}
                     style={{ 
                       cursor: 'pointer', 
-                      fontSize: '22px', 
+                      fontSize: '18px', 
                       border: '1px solid #ccc', 
                       padding: '3px', 
-                      width: '60px',
+                      width: '50px',
                       color: 'black',
                       backgroundColor: 'white',
                       display: 'flex',
@@ -360,7 +360,7 @@ export const Buyform = () => {
                         overflowY: 'auto',
                         color: 'white',
                         backgroundColor: 'black',
-                        width: '60%',
+                        width: '70%',
                         height: '500px',
                         marginTop: '-330px',
                         marginLeft: '100px',
