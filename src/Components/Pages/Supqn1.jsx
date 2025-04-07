@@ -37,7 +37,7 @@ export const Supqn1 = () => {
       navigate('/supqn2');
 
       // Background submission to Google Sheets
-      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
+      const url = "https://script.google.com/macros/s/AKfycbwr6yoFGKPGJBO2DR_YvGXaZqnoRicLSCas63mJqNJTgXEZ9mVOjQ_CL5O_gLwNQpsS/exec";
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -94,7 +94,7 @@ export const Supqn1 = () => {
                 </button>
               </div>
 
-              {/* Other Input with Submit */}
+             {/* Other Input with Submit */}
               <form onSubmit={handleOtherSubmit} className="supqn1-input-group">
                 <span className="supqn1-label">Other:</span>
                 <div className="supqn1-input-with-button">

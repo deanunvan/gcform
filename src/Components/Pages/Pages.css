@@ -13,7 +13,7 @@
   
   /* HEADER */
   .header {
-    padding: 30px 10px;
+    padding: 20px 10px;
   }
   
   .logo {
@@ -37,7 +37,7 @@
   }
   
   .hero-text h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
   }
   
@@ -185,7 +185,7 @@
 }
 
 .logo2 {
-  margin: 0 10px;
+  margin: -10px 10px;
 
 }
 
@@ -993,4 +993,25 @@
   font-size: 16px;
   height: 40px;
 }
+}
+
+@media (max-width: 414px) {
+  .thank-you-image{
+    width: 100%;
+    height: 45%;
+  }
+}
+
+@media (max-width: 430px) {
+  .thank-you-image{
+    width: 100%;
+    height: 45%;
+  }
+}
+
+@media (max-width: 500px) {
+  .thank-you-image{
+    width: 100%;
+    height: 45%;
+  }
 }

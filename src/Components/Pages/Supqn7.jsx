@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
 import { useSupplierContext } from '../../context/SupplierContext';
-import qn1 from '../Images/q4.png';
+import qn1 from '../Images/877ae7eb6221007d964ca02b488364fc.jpg';
 import mainLogo from '../Images/main logo.png';
 import "./Pages.css";
 
@@ -10,6 +10,7 @@ export const Supqn7 = () => {
   const navigate = useNavigate();
   const { supplierData, updateAnswer, submitToWaitingList } = useSupplierContext();
   const [selectedOption, setSelectedOption] = useState(supplierData.answers.question6);
+  const [otherInput, setOtherInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export const Supqn7 = () => {
       navigate('/thank-you');
 
       // Background submissions
-      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
+      const url = "https://script.google.com/macros/s/AKfycbwr6yoFGKPGJBO2DR_YvGXaZqnoRicLSCas63mJqNJTgXEZ9mVOjQ_CL5O_gLwNQpsS/exec";
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -59,6 +60,14 @@ export const Supqn7 = () => {
     handleSubmission(option);
   };
 
+  const handleOtherSubmit = async (e) => {
+    e.preventDefault();
+    if (!otherInput.trim()) return;
+    // You can update the answer with the other input text
+    await updateAnswer(7, otherInput);
+    handleSubmission(otherInput);
+  };
+
   return (
     <div>
       <img className="logo2" src={mainLogo} alt="Groundcentered Logo" />
@@ -70,22 +79,31 @@ export const Supqn7 = () => {
               <Link to='/supqn6'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>7. What's the number 1 thing you'd change about how you sell <br /> equipment today?
+              <h2>
+                7. What's the number 1 thing you'd change about how you sell <br /> equipment today?
               </h2>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Yes')}
-                disabled={isLoading}
-              >
-                Yes
-              </button>
-              <button 
-                className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('No')}
-                disabled={isLoading}
-              >
-                No
-              </button>
+
+              {/* Other Input with Submit */}
+              <form onSubmit={handleOtherSubmit} className="supqn1-input-group">
+                <span className="supqn1-label">Answer</span>
+                <div className="supqn1-input-with-button">
+                  <textarea 
+                    placeholder="Please Specify" 
+                    className="supqn1-input"
+                    value={otherInput}
+                    onChange={(e) => setOtherInput(e.target.value)}
+                    rows="1"
+                    disabled={isLoading}
+                  />
+                  <button 
+                    type="submit"
+                    className="supqn1-submit-button"
+                    disabled={!otherInput.trim() || isLoading}
+                  >
+                    {isLoading ? '...' : 'Submit'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -100,6 +118,9 @@ export const Supqn7 = () => {
           <div className="supqn1-dot active"></div>
         </div>
       </div>
+      <footer className="footer">
+        <p>groundcentered.com © 2025 All Rights Reserved</p>
+      </footer>
     </div>
   );
 };
