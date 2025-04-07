@@ -38,8 +38,8 @@ export const Supqn6 = () => {
       navigate('/supqn7');
 
       // Background submissions
-      const sheetsUrl = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
-      fetch(sheetsUrl, {
+      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
+      fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `Answer6=${encodeURIComponent(option)}`

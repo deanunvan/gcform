@@ -38,7 +38,7 @@ export const Supqn4 = () => {
       navigate('/supqn5');
 
       // Background submission to Google Sheets
-      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -67,7 +67,7 @@ export const Supqn4 = () => {
               <Link to='/supqn3'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>4. What features would make an online marketplace valuable for your business?</h2>
+              <h2>4. What features would make an online marketplace valuable for <br /> your business?</h2>
               <button 
                 className={`supqn1-button ${selectedOption === 'Easy payment processing' ? 'selected' : ''}`}
                 onClick={() => handleOptionSelect('Easy payment processing')}

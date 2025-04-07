@@ -37,7 +37,7 @@ export const Supqn1 = () => {
       navigate('/supqn2');
 
       // Background submission to Google Sheets
-      const url = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

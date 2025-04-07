@@ -237,7 +237,7 @@ export const Buyform = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Send data to external service
-    const url = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
+    const url = "https://script.google.com/macros/s/AKfycbwU5KHlTZIf5GLcC6YhgF6je89i_W-hxvZmfMKolYLons2tIUcm_Ho51maQ6SW-fBex1A/exec";
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

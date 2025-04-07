@@ -33,15 +33,15 @@ export const Supqn7 = () => {
     setIsLoading(true);
     try {
       // Update context and navigate immediately
-      await updateAnswer(6, option);
+      await updateAnswer(7, option);
       navigate('/thank-you');
 
       // Background submissions
-      const sheetsUrl = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
-      fetch(sheetsUrl, {
+      const url = "https://script.google.com/macros/s/AKfycbxcLZRtvocs52dukka_oYpFVGfSvkL7fjECbRLReUbibeRC5z1Bk8dY5ZtJXGj4g9g/exec";
+      fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `Answer6=${encodeURIComponent(option)}`
+        body: `Answer7=${encodeURIComponent(option)}`
       }).catch(error => console.error('Sheets submission error:', error));
 
       if (submitToWaitingList) {

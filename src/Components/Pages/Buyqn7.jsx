@@ -33,15 +33,15 @@ export const Buyqn7 = () => {
     setIsLoading(true);
     try {
       // Update context and navigate immediately
-      await updateAnswer(6, option);
+      await updateAnswer(7, option);
       navigate('/thank-you');
 
       // Submit to Google Sheets in the background
-      const sheetsUrl = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
-      fetch(sheetsUrl, {
+      const url = "https://script.google.com/macros/s/AKfycbwU5KHlTZIf5GLcC6YhgF6je89i_W-hxvZmfMKolYLons2tIUcm_Ho51maQ6SW-fBex1A/exec";
+      fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `Answer6=${encodeURIComponent(option)}`
+        body: `Answer7=${encodeURIComponent(option)}`
       })
         .then(response => response.text())
         .catch(error => console.error('Sheets submission error:', error));

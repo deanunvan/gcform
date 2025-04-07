@@ -37,7 +37,7 @@ export const Buyqn1 = () => {
       navigate('/buyqn2');
 
       // Background submission to Google Sheets
-      const url = "https://script.google.com/macros/s/AKfycbzxhNeYtz_ChZxub6OJ13FXf33YNkxMB3SzQgvs9fT8eLjZSJtlLZbae3E0AdOpiNXwng/exec";
+      const url = "https://script.google.com/macros/s/AKfycbwU5KHlTZIf5GLcC6YhgF6je89i_W-hxvZmfMKolYLons2tIUcm_Ho51maQ6SW-fBex1A/exec";
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
