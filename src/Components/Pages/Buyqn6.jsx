@@ -19,7 +19,6 @@ export const Buyqn6 = () => {
       delay: 200
     });
     
-    sr.reveal('.logo2', { origin: 'top', delay: 80 });
     sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });
@@ -35,7 +34,7 @@ export const Buyqn6 = () => {
     try {
       // Update context and navigate immediately
       await updateAnswer(6, option);
-      navigate('/thank-you');
+      navigate('/buyqn7');
 
       // Submit to Google Sheets in the background
       const sheetsUrl = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
@@ -65,7 +64,7 @@ export const Buyqn6 = () => {
           <div className="supqn1-content">
             <div className="supqn1-img">
               <img src={qn1} alt="Drilling Equipment" className="supqn1-image" />
-              <Link to='/buyqn5'><button className="supqn1-nav">←</button></Link>
+              <Link to='/buyqn6'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
               <h2>6. Would secure communication channels on the platform <br /> appeal to you?</h2>

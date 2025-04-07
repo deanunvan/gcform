@@ -19,7 +19,7 @@ export const Supqn6 = () => {
       delay: 200
     });
 
-    sr.reveal('.logo2', { origin: 'top', delay: 800 });
+
     sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });
@@ -35,7 +35,7 @@ export const Supqn6 = () => {
     try {
       // Update context and navigate immediately
       await updateAnswer(6, option);
-      navigate('/thank-you');
+      navigate('/supqn7');
 
       // Background submissions
       const sheetsUrl = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";

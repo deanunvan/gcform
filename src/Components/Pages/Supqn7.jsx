@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
-import { useBuyerContext } from '../../context/BuyerContext';
-import qn1 from '../Images/q5.png';
+import { useSupplierContext } from '../../context/SupplierContext';
+import qn1 from '../Images/q4.png';
 import mainLogo from '../Images/main logo.png';
 import "./Pages.css";
 
-export const Buyqn5 = () => {
+export const Supqn7 = () => {
   const navigate = useNavigate();
-  const { buyerData, updateAnswer } = useBuyerContext();
-  const [selectedOption, setSelectedOption] = useState(buyerData.answers.question5);
+  const { supplierData, updateAnswer, submitToWaitingList } = useSupplierContext();
+  const [selectedOption, setSelectedOption] = useState(supplierData.answers.question6);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -18,39 +18,45 @@ export const Buyqn5 = () => {
       duration: 600,
       delay: 200
     });
-    
 
     sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });
     sr.reveal('.supqn1-button', { origin: 'right', interval: 100, delay: 1000, distance: '50px' });
     sr.reveal('.supqn1-input-group', { origin: 'bottom', delay: 1200, distance: '30px' });
-    
+
     return () => sr.destroy();
   }, []);
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
+  const handleSubmission = async (option) => {
+    if (!option) return;
     setIsLoading(true);
     try {
       // Update context and navigate immediately
-      await updateAnswer(5, option);
-      navigate('/buyqn6');
+      await updateAnswer(6, option);
+      navigate('/thank-you');
 
-      // Submit to Google Sheets in the background
-      const url = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
-      fetch(url, {
+      // Background submissions
+      const sheetsUrl = "https://script.google.com/macros/s/AKfycbzJl79if_3uQxsdZcgX7L1nsBCwJGgpslkxGCD6W7xXCv9Kk_1PZsKXEe9_plUemQk/exec";
+      fetch(sheetsUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `Answer5=${encodeURIComponent(option)}`
-      })
-        .then(response => response.text())
-        .catch(error => console.error('Submission error:', error));
+        body: `Answer6=${encodeURIComponent(option)}`
+      }).catch(error => console.error('Sheets submission error:', error));
+
+      if (submitToWaitingList) {
+        submitToWaitingList().catch(error => console.error('Waiting list error:', error));
+      }
     } catch (error) {
       console.error('Error updating answer:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    handleSubmission(option);
   };
 
   return (
@@ -61,30 +67,24 @@ export const Buyqn5 = () => {
           <div className="supqn1-content">
             <div className="supqn1-img">
               <img src={qn1} alt="Drilling Equipment" className="supqn1-image" />
-              <Link to='/buyqn4'><button className="supqn1-nav">←</button></Link>
+              <Link to='/supqn6'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>5. How frequently do you purchase equipment for your business?</h2>
+              <h2>7. What's the number 1 thing you'd change about how you sell <br /> equipment today?
+              </h2>
               <button 
-                className={`supqn1-button ${selectedOption === 'Daily/Weekly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Daily/Weekly')}
+                className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
+                onClick={() => handleOptionSelect('Yes')}
                 disabled={isLoading}
               >
-                Daily/Weekly
+                Yes
               </button>
               <button 
-                className={`supqn1-button ${selectedOption === 'Monthly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Monthly')}
+                className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
+                onClick={() => handleOptionSelect('No')}
                 disabled={isLoading}
               >
-                Monthly
-              </button>
-              <button 
-                className={`supqn1-button ${selectedOption === 'Quarterly or less' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Quarterly or less')}
-                disabled={isLoading}
-              >
-                Quarterly or less
+                No
               </button>
             </div>
           </div>
@@ -97,7 +97,7 @@ export const Buyqn5 = () => {
           <div className="supqn1-dot active"></div>
           <div className="supqn1-dot active"></div>
           <div className="supqn1-dot active"></div>
-          <div className="supqn1-dot"></div>
+          <div className="supqn1-dot active"></div>
         </div>
       </div>
     </div>

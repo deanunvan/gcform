@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
-import Logo2 from '../Images/logo2.png';
+import Logo2 from '../Images/main logo.png';
 import qn1 from '../Images/tik.png';
 import './Pages.css';
 

@@ -19,7 +19,7 @@ export const Buyqn4 = () => {
       delay: 200
     });
     
-    sr.reveal('.logo2', { origin: 'top', delay: 80 });
+
     sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });

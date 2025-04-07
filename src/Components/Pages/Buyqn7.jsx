@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from 'scrollreveal';
 import { useBuyerContext } from '../../context/BuyerContext';
-import qn1 from '../Images/q5.png';
+import qn1 from '../Images/q3.png';
 import mainLogo from '../Images/main logo.png';
 import "./Pages.css";
 
-export const Buyqn5 = () => {
+export const Buyqn7 = () => {
   const navigate = useNavigate();
-  const { buyerData, updateAnswer } = useBuyerContext();
-  const [selectedOption, setSelectedOption] = useState(buyerData.answers.question5);
+  const { buyerData, updateAnswer, submitToWaitingList } = useBuyerContext();
+  const [selectedOption, setSelectedOption] = useState(buyerData.answers.question6);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -19,7 +19,6 @@ export const Buyqn5 = () => {
       delay: 200
     });
     
-
     sr.reveal('.supqn1-image', { origin: 'left', delay: 400, distance: '100px' });
     sr.reveal('.supqn1-nav', { origin: 'bottom', delay: 600, distance: '20px' });
     sr.reveal('.supqn1-question h2', { origin: 'right', delay: 800, distance: '80px' });
@@ -34,18 +33,22 @@ export const Buyqn5 = () => {
     setIsLoading(true);
     try {
       // Update context and navigate immediately
-      await updateAnswer(5, option);
-      navigate('/buyqn6');
+      await updateAnswer(6, option);
+      navigate('/thank-you');
 
       // Submit to Google Sheets in the background
-      const url = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
-      fetch(url, {
+      const sheetsUrl = "https://script.google.com/macros/s/AKfycbyL_h7LSONlLuH-Z1TY2ClE9rfvd5AzOgi7zHT3FNckZ2kN_sSWMhLeftGTbI0gWlku/exec";
+      fetch(sheetsUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `Answer5=${encodeURIComponent(option)}`
+        body: `Answer6=${encodeURIComponent(option)}`
       })
         .then(response => response.text())
-        .catch(error => console.error('Submission error:', error));
+        .catch(error => console.error('Sheets submission error:', error));
+
+      // Submit to waiting list in the background
+      submitToWaitingList()
+        .catch(error => console.error('Waiting list submission error:', error));
     } catch (error) {
       console.error('Error updating answer:', error);
     } finally {
@@ -61,30 +64,30 @@ export const Buyqn5 = () => {
           <div className="supqn1-content">
             <div className="supqn1-img">
               <img src={qn1} alt="Drilling Equipment" className="supqn1-image" />
-              <Link to='/buyqn4'><button className="supqn1-nav">←</button></Link>
+              <Link to='/buyqn6'><button className="supqn1-nav">←</button></Link>
             </div>
             <div className="supqn1-question">
-              <h2>5. How frequently do you purchase equipment for your business?</h2>
+              <h2>7. What's the number 1 thing you'd change about how you sell <br /> equipment today?</h2>
               <button 
-                className={`supqn1-button ${selectedOption === 'Daily/Weekly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Daily/Weekly')}
+                className={`supqn1-button ${selectedOption === 'Yes' ? 'selected' : ''}`}
+                onClick={() => handleOptionSelect('Yes')}
                 disabled={isLoading}
               >
-                Daily/Weekly
+                Yes
               </button>
               <button 
-                className={`supqn1-button ${selectedOption === 'Monthly' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Monthly')}
+                className={`supqn1-button ${selectedOption === 'No' ? 'selected' : ''}`}
+                onClick={() => handleOptionSelect('No')}
                 disabled={isLoading}
               >
-                Monthly
+                No
               </button>
               <button 
-                className={`supqn1-button ${selectedOption === 'Quarterly or less' ? 'selected' : ''}`}
-                onClick={() => handleOptionSelect('Quarterly or less')}
+                className={`supqn1-button ${selectedOption === 'Not important' ? 'selected' : ''}`}
+                onClick={() => handleOptionSelect('Not important')}
                 disabled={isLoading}
               >
-                Quarterly or less
+                Not important
               </button>
             </div>
           </div>
@@ -97,7 +100,7 @@ export const Buyqn5 = () => {
           <div className="supqn1-dot active"></div>
           <div className="supqn1-dot active"></div>
           <div className="supqn1-dot active"></div>
-          <div className="supqn1-dot"></div>
+          <div className="supqn1-dot active"></div>
         </div>
       </div>
     </div>

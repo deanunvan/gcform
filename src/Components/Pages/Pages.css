@@ -185,7 +185,8 @@
 }
 
 .logo2 {
-  margin: 0 10px; 
+  margin: 0 10px;
+
 }
 
 /* Left Section */
@@ -816,7 +817,7 @@
   justify-content: space-between;
   padding: 2rem;
   background-color: #ffffff;
-  height: 94vh;
+  height: 110vh;
 }
 
 .thank-you-content {
