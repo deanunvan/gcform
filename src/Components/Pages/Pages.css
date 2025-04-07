@@ -10,6 +10,25 @@
     color: #000000;
     line-height: 1.5;
   }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    33% {
+      transform: translateX(30px);
+    }
+    66% {
+      transform: translateX(-50px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  .loader-animation {
+    animation: slide 5s infinite;
+  }
   
   /* HEADER */
   .header {

@@ -15,7 +15,7 @@ export const Home = () => {
       {/* Hero Section */}
       <section className="hero">
         {/* Background Image */}
-        <div className="hero-image">
+        <div className="hero-image loader-animation">
           <img src={heroImage} alt="Heavy Equipment Loader" />
         </div>
 
